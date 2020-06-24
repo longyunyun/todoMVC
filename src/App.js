@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import ListItem from './TodoMVC/ListItem';
 
 function App() {
   return (
@@ -10,6 +11,8 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
+        <ListItem />
+      
         <a
           className="App-link"
           href="https://reactjs.org"
@@ -24,3 +27,5 @@ function App() {
 }
 
 export default App;
+
+
