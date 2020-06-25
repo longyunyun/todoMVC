@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import '../App.css'
-import { Button, Card, Icon, Layout, Checkbox } from 'element-react'
+import { Button,  Checkbox } from 'element-react'
 import 'element-theme-default'
 
 class ListItem extends Component {
