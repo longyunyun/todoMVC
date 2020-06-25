@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import '../App.css'
 import ListItem from './ListItem'
+import storage from '../model/storage';
 import { Button, Card, Checkbox, Layout, Tabs } from 'element-react'
 import 'element-theme-default'
 
@@ -8,6 +9,7 @@ class TodoList extends Component {
   constructor() {
     super()
     this.state = {
+      name :'tempList',
       checkAll: false,
       isIndeterminate: true,
       notCompleteCount: 0,
@@ -29,6 +31,12 @@ class TodoList extends Component {
       }],
       inputVal: ''
     })
+      // 缓存数据
+      storage.set('todolist', [...this.state.list, {
+        name: this.state.inputVal,
+        status: 0
+      }]);
+      
   }
 
   handleChange (e) {
@@ -52,6 +60,9 @@ class TodoList extends Component {
       list: data,
       notCompleteCount: temp
     })
+        // 缓存数据
+        storage.set('todolist',data);
+        storage.set('notCompleteCount',temp);
   }
 
   deleteCompleteItem () {
@@ -60,6 +71,9 @@ class TodoList extends Component {
       list: data,
       notCompleteCount: 0
     })
+       // 缓存数据
+       storage.set('todolist',data);
+       storage.set('notCompleteCount',0);
   }
 
   completeTask (name) {
@@ -84,6 +98,9 @@ class TodoList extends Component {
         TodoList.push(element)
       }
     })
+    // 缓存数据
+    storage.set('todolist',TodoList);
+    storage.set('notCompleteCount',temp);
   }
 
   handleCheckAllChange (checked) {
@@ -102,17 +119,25 @@ class TodoList extends Component {
         TodoList.push(element)
       }
     })
+       // 缓存数据
+       storage.set('todolist',TodoList);
+       storage.set('notCompleteCount',checked === true ? TodoList.length : 0);
   }
 
-  handleCheckedCitiesChange (value) {
-    const checkedCount = value.length
-    const citiesLength = this.state.cities.length
-    this.setState({
-      checkedCities: value,
-      checkAll: checkedCount === citiesLength,
-      isIndeterminate: checkedCount > 0 && checkedCount < citiesLength,
-    })
-  }
+
+  //生命周期函数  页面加载就会触发
+  componentDidMount(){
+    //获取缓存的数据
+    var todolist=storage.get('todolist');
+    var notCompleteCount=storage.get('notCompleteCount');
+    if(todolist){
+        //拿到缓存的数据 自动刷新
+        this.setState({
+            list:todolist,
+            notCompleteCount:notCompleteCount
+        })
+    }
+}
 
   render () {
     return (
