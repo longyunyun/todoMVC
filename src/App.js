@@ -1,7 +1,7 @@
 import React from 'react'
 // import logo from './logo.svg'
 import './App.css'
-import TodoList from './TodoMVC/TodoList'
+import TodoList from './components/TodoList'
 import Footer from './footer'
 import { Menu } from 'element-react'
 import 'element-theme-default'
