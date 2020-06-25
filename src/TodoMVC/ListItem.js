@@ -23,17 +23,9 @@ class ListItem extends Component {
                    <span style={{  margin: 20,textDecorationLine: element.status === 0 ? 'none' : 'line-through' ,color:element.status === 0 ? '#1F2D3D' : '#E5E9F2' }}>{element.name}</span>
                 </Checkbox>
                 </span>
-        
                 <span style={{ "text-align": "right" }}>
                 <Button type="text"  icon="delete" onClick={this.deleteTask.bind(this, element.name)}/>
-                </span>
-        
-                {/* <Button type="primary" icon="delete" className="delete" onClick={this.deleteTask.bind(this, element.name)}></Button>
-                {/* <input type="checkbox" */}
-                  {/* checked={element.status === 1}
-                  onChange={this.completeTask.bind(this, element.name)}/>
-                <span style={{textDecorationLine: element.status === 0 ? 'none' : 'line-through'}}>{element.name}</span>
-                <button className="delete" onClick={this.deleteTask.bind(this, element.name)}>删除</button> */} 
+                </span> 
               </li>)
           })
         }

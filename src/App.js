@@ -2,6 +2,7 @@ import React from 'react'
 // import logo from './logo.svg'
 import './App.css'
 import TodoList from './TodoMVC/TodoList'
+import Footer from './footer'
 import { Menu } from 'element-react'
 import 'element-theme-default'
 
@@ -21,7 +22,7 @@ function App () {
           Edit <code>src/App.js</code> and save to reload.
         </p> */}
 
-  <TodoList />
+<TodoList />
         {/* <Button type='primary'>button</Button> */}
         {/* <a
           className="App-link"
@@ -32,6 +33,8 @@ function App () {
           Learn React
         </a> */}
       </header>
+    
+      <Footer/>
     </div>
   )
   // onSelect() {
