@@ -156,7 +156,7 @@ class TodoList extends Component {
                       />
                     <input type="text" value={this.state.inputVal} onChange={this.handleChange.bind(this)} 
                       placeholder="在此添加任务"></input>
-                    <span style={{ "text-align": "right" }}>
+                    <span style={{ "textAlign": "right" }}>
                       <Button type="text" icon="plus" onClick={this.addTask.bind(this)} />
                     </span>
                   </span>

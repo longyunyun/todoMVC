@@ -7,7 +7,6 @@ import { httpPost } from '../components/Fetch'
 class Register extends Component {
     constructor(props) {
         super(props)
-
         this.state = {
             form: {
                 username: '',
@@ -17,6 +16,7 @@ class Register extends Component {
             rules: {
                 password: [
                     { required: true, message: '请输入密码', trigger: 'blur' },
+                    { min: 6, message: '密码长度不少于6', trigger: 'blur' },
                     {
                         validator: (rule, value, callback) => {
                             if (value === '') {
@@ -45,70 +45,43 @@ class Register extends Component {
                     }
                 ],
                 username: [
-                    { required: true, message: '请设置登录名', trigger: 'blur' },
                     {
-                        validator: (rule, value, callback) => {
-                            var age = parseInt(value, 10)
-
-                            setTimeout(() => {
-                                if (!Number.isInteger(age)) {
-                                    callback(new Error('请输入数字值'))
-                                } else {
-                                    if (age < 18) {
-                                        callback(new Error('必须年满18岁'))
-                                    } else {
-                                        callback()
-                                    }
-                                }
-                            }, 1000)
-                        }, trigger: 'change'
-                    }
+                        required: true, message: '请设置登录名',
+                        trigger: 'blur'
+                    }, {
+                        min: 6, message: '登录名长度不少于6',
+                        trigger: 'blur'
+                    },
                 ]
             }
         }
     }
-    handleUsername(event){this.setState({username:event.target.value})}
-    handlePwd(event){this.setState({password:event.target.value})}
-  
+    handleUsername (event) { this.setState({ username: event.target.value }) }
+    handlePwd (event) { this.setState({ password: event.target.value }) }
+
     handleSubmit (e) {
         e.preventDefault()
-        httpPost('http://localhost:3001/register',{
-            username:this.state.form.username,
-            password:this.state.form.password
-         
-        }).then((response)=>{
-           
-           
+        httpPost('http://localhost:3001/register', {
+            username: this.state.form.username,
+            password: this.state.form.password
+        }).then((response) => {
             return response.json()
-         
-        }).then((data)=>{
+        }).then((data) => {
             console.log(data)
-            if(data.code===200){
-                
-                this.props.history.push('/')
+            if (data.code === 200) {
+                this.props.history.push('/TodoList')
             }
-            if(data.code==0){
-                
+            else {
                 alert(data.message)
             }
-    }).catch(function(error){
- 
-        console.log(error)
-       
-    })
-        // this.refs.form.validate((valid) => {
-        //     if (valid) {
-        //         alert('submit!')
-        //     } else {
-        //         console.log('error submit!!')
-        //         return false
-        //     }
-        // })
+        }).catch(function (error) {
+            console.log(error)
+        })
+
     }
 
     handleReset (e) {
         e.preventDefault()
-
         this.refs.form.resetFields()
     }
 
@@ -152,7 +125,7 @@ class Register extends Component {
                     <Layout.Col span="8" offset="8">
                         <Card>
                             <div style={{ margin: 20 }}></div>
-                            <Form  labelPosition='left' ref="form" model={this.state.form} rules={this.state.rules} labelWidth="100" className="demo-ruleForm">
+                            <Form labelPosition='left' ref="form" model={this.state.form} rules={this.state.rules} labelWidth="100" className="demo-ruleForm">
                                 <Form.Item label="登录名" prop="username">
                                     <Input value={this.state.form.username} onChange={this.onChange.bind(this, 'username')}></Input>
                                 </Form.Item>
@@ -165,20 +138,10 @@ class Register extends Component {
                             </Form>
                             <Button type="primary" onClick={this.handleSubmit.bind(this)}>注册</Button>
                             <Button onClick={this.handleReset.bind(this)}>重置</Button>
-
                         </Card>
                     </Layout.Col></Layout.Row><div style={{ margin: 20 }}>
-
                 </div>
-                {/* <div><p>
-                用户名：</p><input type="text" ref= {el=>this.users=el} /><br/>
-                密码：<input type= "password"  ref= {el=>this.password=el} /><br/>
-                验证码：<input type="text"/><br/>
-                <button onClick= {this.LoginClick} > 登录</button>
-             </div> */}
             </div>
-           
-               
         )
     }
 }
