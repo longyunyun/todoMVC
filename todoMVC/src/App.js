@@ -26,7 +26,6 @@
 import React, { Component } from 'react'
 // 连接使用
 import { connect } from 'react-redux'
-import FetchPost from './components/FetchPost'
 import { addgun, removegun, addgunAsync } from './redux'
 class App extends Component {
   state = {users: []}
@@ -36,8 +35,6 @@ componentDidMount() {
     .then(res => res.json())
     .then(users => this.setState({ users }));
 }
-
-
 
   render () {
     return (
@@ -54,7 +51,7 @@ componentDidMount() {
       {this.state.users.map(user =>
         <div key={user.id}>{user.username}</div>
       )}
-      <FetchPost/>
+ 
       </div>
     )
   }
