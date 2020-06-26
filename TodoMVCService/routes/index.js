@@ -3,14 +3,14 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/users');
  
-/* /根路径 跳转至login.html */
-router.get('/', function(req, res, next) {
-  res.sendfile('./views/login.html'); 
-});
-/* /a 跳转至register.html */
-router.get('/a', function(req, res, next) {
-  res.sendfile('./views/register.html'); 
-});
+// /* /根路径 跳转至login.html */
+// router.get('/', function(req, res, next) {
+//   res.sendfile('./views/login.html'); 
+// });
+// /* /a 跳转至register.html */
+// router.get('/a', function(req, res, next) {
+//   res.sendfile('./views/register.html'); 
+// });
  
  
 router.get('/login', function (req, res) {
@@ -30,11 +30,22 @@ router.post('/login', function (req, res) {
         username: postData.username,
         password: postData.password
     }, function (err, data) {
-        if(err) throw err;
+        if(err) {throw err};
+  
         if(data){
-            res.send('登录成功');
+            var response = {
+                code: 200,
+                message: "登录成功"
+              }
+             res.json(response);
+            // res.send('登录成功');
         }else{
-            res.send('账号或密码错误')
+            var response = {
+                code: 404,
+                message: "账号或密码错误"
+              }
+             res.json(response);
+            // res.send('账号或密码错误')
         }
     } )
 });

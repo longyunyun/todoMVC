@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Input, Card, Button, Layout, Form } from 'element-react'
 import 'element-theme-default'
+import { httpPost } from '../components/Fetch'
 
 class Login extends Component {
     constructor(props) {
@@ -11,7 +12,6 @@ class Login extends Component {
             form: {
                 username: '',
                 password: ''
-
             }
         }
     }
@@ -23,6 +23,28 @@ class Login extends Component {
     onChange (key, value) {
         this.setState({
             form: Object.assign(this.state.form, { [key]: value })
+        })
+    }
+    handleUsername (event) { this.setState({ username: event.target.value }) }
+    handlePwd (event) { this.setState({ password: event.target.value }) }
+
+    handleSubmit (e) {
+        e.preventDefault()
+        httpPost('http://localhost:3001/login', {
+            username: this.state.form.username,
+            password: this.state.form.password
+        }).then((response) => {
+            return response.json()
+        }).then((data) => {
+            console.log(data)
+            if (data.code === 200) {
+                this.props.history.push('/TodoList')
+            }
+            else {
+                alert(data.message)
+            }
+        }).catch(function (error) {
+            console.log(error)
         })
     }
     render () {
@@ -40,16 +62,13 @@ class Login extends Component {
                                 <Form.Item label="密码">
                                     <Input type="password" value={this.state.form.password} onChange={this.onChange.bind(this, 'password')}></Input>
                                 </Form.Item>
-
                             </Form>
-
-                            <Button>登录</Button>
+                            <Button onClick={this.handleSubmit.bind(this)}>登录</Button>
                         </Card>
                     </Layout.Col>
                 </Layout.Row>
                 <div style={{ margin: 20 }}></div>
             </div>
-
         )
     }
 }
