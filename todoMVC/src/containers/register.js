@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { Input, Card, Button, Layout, Form } from 'element-react'
 import 'element-theme-default'
 import { httpPost } from '../components/Fetch'
+import MD5 from 'crypto-js/md5'
 
 class Register extends Component {
     constructor(props) {
@@ -63,7 +64,7 @@ class Register extends Component {
         e.preventDefault()
         httpPost('http://localhost:3001/register', {
             username: this.state.form.username,
-            password: this.state.form.password
+            password: MD5(this.state.form.password)
         }).then((response) => {
             return response.json()
         }).then((data) => {

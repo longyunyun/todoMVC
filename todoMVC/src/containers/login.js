@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Input, Card, Button, Layout, Form } from 'element-react'
 import 'element-theme-default'
 import { httpPost } from '../components/Fetch'
+import MD5 from 'crypto-js/md5'
 
 class Login extends Component {
     constructor(props) {
@@ -32,7 +33,7 @@ class Login extends Component {
         e.preventDefault()
         httpPost('http://localhost:3001/login', {
             username: this.state.form.username,
-            password: this.state.form.password
+            password: MD5(this.state.form.password)
         }).then((response) => {
             return response.json()
         }).then((data) => {

@@ -7,6 +7,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "bootstrap": "^3.4.1",
+    "crypto-js": "^4.0.0",
     "element-react": "^1.4.34",
     "element-theme-default": "^1.4.13",
     "react": "^16.13.1",
@@ -24,14 +25,12 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  
   "proxy": {
     "/api": {
       "target": "http://localhost:3001",
       "changeOrigin": true
     }
   },
-
   "eslintConfig": {
     "extends": "react-app"
   },
