@@ -10,23 +10,8 @@
 
 // function App () {
 
-
 //   return (
 //     <div className="App">
-//        <Router>
-//         <div>
-//        <Menu theme="dark" defaultActive="1" className="el-menu-demo" mode="horizontal" >
-//        <Link to="/mine/login"><Menu.Item index="1">登录</Menu.Item></Link>
-//        <Link to="/mine/register"> <Menu.Item index="2">注册</Menu.Item></Link>
-//        <Link to="/components/TodoList"> <Menu.Item index="3">任务清单</Menu.Item></Link>
-//       </Menu>
-//       <Route path = "/mine/login" component = { Login }></Route>
-//       <Route path = "/mine/register" component = { Register }></Route>
-//       <Route path = "/components/TodoList" component = { TodoList }></Route>
-//       </div>
-//       </Router>
-
-
 
 //       <Footer/>
 //     </div>
@@ -41,12 +26,13 @@
 import React, { Component } from 'react'
 // 连接使用
 import { connect } from 'react-redux'
+import FetchPost from './components/FetchPost'
 import { addgun, removegun, addgunAsync } from './redux'
 class App extends Component {
   state = {users: []}
  
 componentDidMount() {
-  fetch('/users')
+  fetch('/userList')
     .then(res => res.json())
     .then(users => this.setState({ users }));
 }
@@ -68,6 +54,7 @@ componentDidMount() {
       {this.state.users.map(user =>
         <div key={user.id}>{user.username}</div>
       )}
+      <FetchPost/>
       </div>
     )
   }

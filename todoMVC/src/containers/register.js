@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import { Input, Card, Button, Layout, Form } from 'element-react'
 import 'element-theme-default'
+import { httpPost } from '../components/Fetch'
 
 class Register extends Component {
     constructor(props) {
@@ -66,18 +67,43 @@ class Register extends Component {
             }
         }
     }
-
+    handleUsername(event){this.setState({username:event.target.value})}
+    handlePwd(event){this.setState({password:event.target.value})}
+  
     handleSubmit (e) {
         e.preventDefault()
-
-        this.refs.form.validate((valid) => {
-            if (valid) {
-                alert('submit!')
-            } else {
-                console.log('error submit!!')
-                return false
+        httpPost('http://localhost:3001/register',{
+            username:this.state.form.username,
+            password:this.state.form.password
+         
+        }).then((response)=>{
+           
+           
+            return response.json()
+         
+        }).then((data)=>{
+            console.log(data)
+            if(data.code===200){
+                
+                this.props.history.push('/')
             }
-        })
+            if(data.code==0){
+                
+                alert(data.message)
+            }
+    }).catch(function(error){
+ 
+        console.log(error)
+       
+    })
+        // this.refs.form.validate((valid) => {
+        //     if (valid) {
+        //         alert('submit!')
+        //     } else {
+        //         console.log('error submit!!')
+        //         return false
+        //     }
+        // })
     }
 
     handleReset (e) {
@@ -95,28 +121,28 @@ class Register extends Component {
     //本地存储一个账户的模拟登录注册写法
     //逻辑：通过判断本地存储，来确定用户是否登录过，点击登陆时进行判断
 
-    LoginClick = () => {
+    // LoginClick = () => {
 
-        const username = this.users.value
-        const password = this.password.value
-        let ls_users = localStorage.getItem('users')
-        if (ls_users) {
-            //如果ls_users存在证明已有用户注册,判断密码，用户名是否正确
-            ls_users = JSON.parse(ls_users)
+    //     const username = this.users.value
+    //     const password = this.password.value
+    //     let ls_users = localStorage.getItem('users')
+    //     if (ls_users) {
+    //         //如果ls_users存在证明已有用户注册,判断密码，用户名是否正确
+    //         ls_users = JSON.parse(ls_users)
 
-            if (ls_users.username === username && ls_users.password === password) {
-                alert('登录成功')
-                this.props.history.push('/home')
-            } else {
-                alert('用户名或登录密码输入错误')
-            }
+    //         if (ls_users.username === username && ls_users.password === password) {
+    //             alert('登录成功')
+    //             this.props.history.push('/home')
+    //         } else {
+    //             alert('用户名或登录密码输入错误')
+    //         }
 
-        } else {
-            //没有用户注册，直接保存到本地存储
-            localStorage.setItem('users', JSON.stringify({ username, password }))
-            this.props.history.push('/home')
-        }
-    }
+    //     } else {
+    //         //没有用户注册，直接保存到本地存储
+    //         localStorage.setItem('users', JSON.stringify({ username, password }))
+    //         this.props.history.push('/home')
+    //     }
+    // }
 
     render () {
         return (
@@ -126,7 +152,7 @@ class Register extends Component {
                     <Layout.Col span="8" offset="8">
                         <Card>
                             <div style={{ margin: 20 }}></div>
-                            <Form labelPosition='left' ref="form" model={this.state.form} rules={this.state.rules} labelWidth="100" className="demo-ruleForm">
+                            <Form  labelPosition='left' ref="form" model={this.state.form} rules={this.state.rules} labelWidth="100" className="demo-ruleForm">
                                 <Form.Item label="登录名" prop="username">
                                     <Input value={this.state.form.username} onChange={this.onChange.bind(this, 'username')}></Input>
                                 </Form.Item>
@@ -144,12 +170,12 @@ class Register extends Component {
                     </Layout.Col></Layout.Row><div style={{ margin: 20 }}>
 
                 </div>
-                <div><p>
+                {/* <div><p>
                 用户名：</p><input type="text" ref= {el=>this.users=el} /><br/>
                 密码：<input type= "password"  ref= {el=>this.password=el} /><br/>
                 验证码：<input type="text"/><br/>
                 <button onClick= {this.LoginClick} > 登录</button>
-             </div>
+             </div> */}
             </div>
            
                

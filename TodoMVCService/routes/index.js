@@ -53,9 +53,16 @@ router.post('/register', function (req, res) {
         } else {
             // 保存到数据库
             User.create(postData, function (err, data) {
-                if (err) throw err;
-                console.log('注册成功');
-                res.redirect('/userList');      // 重定向到所用用户列表
+                if (err){throw err} 
+                else {
+                    　               var response = {
+                                         code: 200,
+                                         message: "用户注册成功！"
+                                       }
+                                      res.json(response);
+                    
+                                }
+                            
             })
         }
     });
