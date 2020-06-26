@@ -27,7 +27,7 @@ class Login extends Component {
     }
     render () {
         return (
-            <div>
+            <div className="App">
                 <header className="header">Login</header>
                 <Layout.Row gutter="20">
                     <Layout.Col span="8" offset="8">

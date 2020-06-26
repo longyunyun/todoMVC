@@ -1,6 +1,4 @@
-/**
- * 自己定义的模块
- */
+
 var storage={
 
 
@@ -17,5 +15,5 @@ var storage={
         localStorage.removeItem(key)
     }
 };
-// 暴露出去，供外部使用
+
 export default storage;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import '../App.css'
-import ListItem from './ListItem'
+import ListItem from '../components/ListItem'
 import storage from '../model/storage';
 import { Button, Card, Checkbox, Layout, Tabs } from 'element-react'
 import 'element-theme-default'

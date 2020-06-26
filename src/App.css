@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  margin:0px;
 }
 
 .App-logo {
@@ -67,12 +68,4 @@ ul li {
 ul li span {
   flex: 1;
 }
-.delete, .addTodo{
-  width: 80px;
-  height: 30px;
-  color: red;
-  background-color: transparent;
-  border-radius: 5px;
-  margin-left: 20px;
-  outline: none;
-}
+

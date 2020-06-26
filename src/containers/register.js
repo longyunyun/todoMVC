@@ -44,7 +44,7 @@ class Register extends Component {
                     }
                 ],
                 username: [
-                    { required: true, message: '请填写年龄', trigger: 'blur' },
+                    { required: true, message: '请设置登录名', trigger: 'blur' },
                     {
                         validator: (rule, value, callback) => {
                             var age = parseInt(value, 10)
@@ -120,7 +120,7 @@ class Register extends Component {
 
     render () {
         return (
-            <div>
+            <div className="App">
                 <header className="header">Register</header>
                 <Layout.Row gutter="20">
                     <Layout.Col span="8" offset="8">
