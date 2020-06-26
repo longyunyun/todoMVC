@@ -37,11 +37,21 @@
 
 
 
+
 import React, { Component } from 'react'
 // 连接使用
 import { connect } from 'react-redux'
 import { addgun, removegun, addgunAsync } from './redux'
 class App extends Component {
+  state = {users: []}
+ 
+componentDidMount() {
+  fetch('/users')
+    .then(res => res.json())
+    .then(users => this.setState({ users }));
+}
+
+
   render () {
     return (
       <div>
@@ -53,6 +63,10 @@ class App extends Component {
         <button onClick={this.props.addgun}>加一</button>
         <button onClick={this.props.removegun}>减一</button>
         <button onClick={this.props.addgunAsync}>异步添加</button>
+        <h1>Users</h1>
+      {this.state.users.map(user =>
+        <div key={user.id}>{user.username}</div>
+      )}
       </div>
     )
   }

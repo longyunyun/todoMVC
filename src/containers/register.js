@@ -141,13 +141,18 @@ class Register extends Component {
                             <Button onClick={this.handleReset.bind(this)}>重置</Button>
 
                         </Card>
-                    </Layout.Col></Layout.Row><div style={{ margin: 20 }}></div></div>
-            //  <div>
-            //     用户名：<input type="text" ref= {el=>this.users=el} /><br/>
-            //     密码：<input type= "password"  ref= {el=>this.password=el} /><br/>
-            //     验证码：<input type="text"/><br/>
-            //     <button onClick= {this.LoginClick} > 登录</button>
-            //  </div>
+                    </Layout.Col></Layout.Row><div style={{ margin: 20 }}>
+
+                </div>
+                <div><p>
+                用户名：</p><input type="text" ref= {el=>this.users=el} /><br/>
+                密码：<input type= "password"  ref= {el=>this.password=el} /><br/>
+                验证码：<input type="text"/><br/>
+                <button onClick= {this.LoginClick} > 登录</button>
+             </div>
+            </div>
+           
+               
         )
     }
 }
