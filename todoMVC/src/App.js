@@ -52,12 +52,13 @@ componentDidMount() {
 }
 
 
+
   render () {
     return (
       <div>
         <h1>
           hello
-                                    <br />
+     <br />
           {this.props.num}
         </h1>
         <button onClick={this.props.addgun}>加一</button>
