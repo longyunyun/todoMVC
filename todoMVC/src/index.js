@@ -13,7 +13,7 @@ import Login from './containers/login'
 import Register from './containers/register'
 import TodoList from './containers/TodoList'
 import './index.css';
-
+import Footer from './footer'
 
 import { BrowserRouter, Route, Link, Switch } from 'react-router-dom'
 //创建一个store counter执行reducer方法
@@ -47,7 +47,7 @@ ReactDOM.render(
           </Switch>
 
       </BrowserRouter>
-      
+      <Footer/>
  </div>
     </Provider>
   ),
