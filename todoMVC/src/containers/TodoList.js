@@ -22,7 +22,7 @@ class TodoList extends Component {
       inputVal: '',
     }
   }
-
+//新建任务
   addTask () {
     if (!this.state.inputVal) return
     this.setState({
@@ -38,7 +38,7 @@ class TodoList extends Component {
         status: 0
       }]);
 
-      httpPost('http://localhost:3001/create', {
+      httpPost('http://localhost:3001/todos/create', {
         userid:this.state.inputVal,
         todoname: this.state.inputVal,
         status:0

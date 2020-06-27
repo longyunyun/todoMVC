@@ -1,3 +1,5 @@
+import storage from '../model/storage';
+
 // 封装get请求
 export function httpGet(url){
     var result = fetch(url)
@@ -10,7 +12,9 @@ export function httpPost(url,data){
         mode: "cors",
         headers:{
             'Accept':'application/json,text/plain,*/*',/* 格式限制：json、文本、其他格式 */
-            'Content-Type':'application/x-www-form-urlencoded'/* 请求内容类型 */
+            'Content-Type':'application/x-www-form-urlencoded',/* 请求内容类型 */
+            'Authorization':"Bearer "+storage.get('token') // 从localStorageStorage中获取access token
+
         },
         //data表单数据，body最终要的格式为username=tony&pwd=123456，所以需要格式化
         body:paramsPostBody(data)

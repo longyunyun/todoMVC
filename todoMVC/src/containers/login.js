@@ -6,7 +6,7 @@ import { httpPost } from '../components/Fetch'
 import MD5 from 'crypto-js/md5'
 import {login,getUserData} from '../Auth.redux.js'
 import {Redirect} from 'react-router-dom'
-
+import storage from '../model/storage';
 @connect(
     state => state.auth,
     {login,getUserData}
@@ -67,6 +67,8 @@ class Login extends Component {
         }).then((data) => {
             console.log(data)
             if (data.code === 200) {
+               
+                storage.set('token',data.token);
                 this.props.login()
                 // this.props.history.push('/TodoList')
             }
