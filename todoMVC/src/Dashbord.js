@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Button } from 'element-react'
+import 'element-theme-default'
 //路由
 import {Route,Link,Switch,Redirect} from 'react-router-dom'
 import App from './App';
@@ -21,25 +23,22 @@ class Dashbord extends Component{
         const redirectToLogin = <Redirect to='/Login'></Redirect>
         const match = this.props.match;
         const app = (
-          <div>
-                 <TodoList/>
-          {this.props.isAuth?<button onClick={this.props.logout}>注销</button> : null}
-     
-              <ul>
-              {/* <Link to="/login">登录</Link>
-            <Link to="/register"> 注册</Link>
-            <Link to="TodoList"> 任务清单</Link> */}
-    <p>{token}</p>
-              </ul>  
+          <div className="App">
+        
               <Switch>
-                  <Route path='/Dashbord/'  component={App}></Route>
+                  {/* <Route path='/Dashbord/'  component={App}></Route> */}
+                  <Route path='/Dashbord/'  component={TodoList}></Route>
+
                   {/* <Route path='/Dashbord/erying' component={Erying}></Route>
                   <Route path='/Dashbord/qibinglian' component={Qibinglian}></Route> */}
-                      <Route path="/login" component={Login}></Route>
+                      {/* <Route path="/login" component={Login}></Route>
             <Route path="/register" component={Register}></Route>
-            <Route path="/TodoList" component={TodoList}></Route>
+            <Route path="/TodoList" component={TodoList}></Route> */}
        
               </Switch> 
+              <div style={{ margin: 20 }}></div>
+              {this.props.isAuth?<Button onClick={this.props.logout}>注销</Button> : null}
+     
           </div>
         )
 
