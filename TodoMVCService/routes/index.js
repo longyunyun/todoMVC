@@ -1,7 +1,7 @@
 // routes/index.js
 var express = require('express');
 var router = express.Router();
-var User = require('../models/users');
+var Todo = require('../models/todos');
  
 // /* /根路径 跳转至login.html */
 // router.get('/', function(req, res, next) {
@@ -20,35 +20,84 @@ router.get('/register', function (req, res) {
     res.render('register');
 });
  
-// 这里的业务逻辑将写在 两个post 路由里 
-router.post('/login', function (req, res) {
+// 新建任务 
+router.post('/create', function (req, res) {
 	var postData = {
-        username: req.body.username,
-        password: req.body.password
+        userid: req.body.userid,
+        todoname: req.body.todoname,
+        status:req.body.status
     };
-    User.findOne({
-        username: postData.username,
-        password: postData.password
-    }, function (err, data) {
-        if(err) {throw err};
-  
-        if(data){
+    new Todo({ //实例化对象，新建数据
+        userid: req.body.userid,
+     
+        todoname: req.body.todoname,
+        status:req.body.status
+    }).save(function(err, todoname, status) { //保存数据
+        console.log('内容', todoname, '状态', status); //打印保存的数据
+        if(err) {throw err}
+        else{
             var response = {
                 code: 200,
-                message: "登录成功"
+                message: "添加待办成功"
               }
              res.json(response);
-            // res.send('登录成功');
-        }else{
-            var response = {
-                code: 404,
-                message: "账号或密码错误"
-              }
-             res.json(response);
-            // res.send('账号或密码错误')
         }
-    } )
+      
+    });
+   
 });
+ // 删除任务
+ router.get('/del', (req, res, next) => {
+    let response = res
+    Todo.find({}, (err, result, res) => {
+        if(err) return console.log(err)
+        response.render('del', { result })
+    })
+})
+router.post('/del', (req, res, next) => {
+    Todo.remove({_id: req.body._id}, (err, result) => {
+        if(err) return console.log(err)
+        console.log(result.result)
+        var response = {
+            code: 200,
+            message: "删除成功"
+          }
+         res.json(response);
+        // res.send("<a href='/'>删除成功，点击返回首页</a>")
+    })
+})
+ // 修改任务
+ router.get('/update', (req, res, next) => {
+    let response = res
+    classModel.find({}, (err, result, res) => {
+        if(err) return console.log(err)
+        response.render('update', { result })
+    })
+})
+router.post('/update', (req, res, next) => {
+    console.log(req.body)
+    let num = req.body.num,
+        condiction = {_id: req.body._id[num]},
+        query = {$set: {name: req.body.name[num], studentId: req.body.student_id[num]}}
+    classModel.update(condiction, query, (err, result) => {
+        if(err) {
+            console.log(err)
+            res.send('<script>alert("请勾选待修改的学生")</script>')
+        }
+        res.send("<a href='/'>修改成功，点击返回首页</a>")
+    })
+})
+
+router.get('/del.html', function(req, res, next) {
+    var id=req.query.id;  //获取url后的?id的值。get提交，就用query获取参数
+    console.log('id='+id);
+    if(id&&''!=id){  
+        member_integrals.findByIdAndRemove(id,function(err,docs){  //删除执行函数
+             console.log('delete-----'+docs);
+             res.render('index', { title: 'Express Demo Example' });
+        });
+    }
+  });
 router.post('/register', function (req, res) {
         // 获取用户提交的信息
     var postData = {
@@ -58,7 +107,7 @@ router.post('/register', function (req, res) {
         address: req.body.address
     };
     // 查询是否被注册
-    User.findOne({username: postData.username}, function (err, data) {
+    Todo.findOne({username: postData.username}, function (err, data) {
         if (data) {
             res.send('用户名已被注册');
         } else {
@@ -80,8 +129,8 @@ router.post('/register', function (req, res) {
 });
  
 // 获取所有用户列表
-router.get('/userList', function (req, res) {
-    var userList = User.find({}, function (err, data) {
+router.get('/todoList', function (req, res) {
+    var todoList = Todo.find({}, function (err, data) {
         if (err) throw  err;
         res.send(data)
     });
