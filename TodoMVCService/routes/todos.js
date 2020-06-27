@@ -42,6 +42,44 @@ router.post('/del', (req, res, next) => {
         // res.send("<a href='/'>删除成功，点击返回首页</a>")
     })
 })
+//改任务状态
+router.post('/changeStatus', (req, res, next) => {
+
+    Todo.findOne({_id: req.body._id},function (err, data) {
+        if (data) {
+            console.log(data)
+            var newtask={
+        
+                username:data.username,
+                todoname:data.todoname,
+                status:!data.status
+            }
+            Todo.update({_id: req.body._id}, newtask,(err, result) => {
+                if(err) return console.log(err)
+                console.log(result.result)
+                var response = {
+                    code: 200,
+                    message: "修改成功"
+                  }
+                 res.json(response); })
+        }})
+   
+        // res.send("<a href='/'>删除成功，点击返回首页</a>")
+   
+})
+router.post('/update', (req, res, next) => {
+    console.log(req.body)
+    let num = req.body.num,
+        condiction = {_id: req.body._id[num]},
+        query = {$set: {name: req.body.name[num], studentId: req.body.student_id[num]}}
+    classModel.update(condiction, query, (err, result) => {
+        if(err) {
+            console.log(err)
+            res.send('<script>alert("请勾选待修改的学生")</script>')
+        }
+        res.send("<a href='/'>修改成功，点击返回首页</a>")
+    })
+})
 // 获取用户任务列表
 router.post('/todoList', function (req, res) {
 
@@ -51,84 +89,13 @@ router.post('/todoList', function (req, res) {
     });
 });
 module.exports = router;
-// var express = require('express');
-// var router = express.Router();
-// const jwt = require('jsonwebtoken')
-// var User = require('../models/User');// 引入模型
-
-// router.get('/',function(req,res,next){
-//     res.render('port',{
-//               ports: JSON.stringify(
-//                    [
-//                     {
-//                          id: 1,
-//                          content: '敲代码'
-//                      },
-//                       {
-//                       id: 2,
-//                          content: '打篮球'
-//                   }
-//                   ]
-//                )
-//            });
-// });
-// router.get('/api/user',async(req,res) =>{
-//     //查询所有用户
-//     const users = await User.find()
-//     res.send(users)
-// })
-
-// // 注册
-// router.post('/api/register',async(req,res) =>{
-//     const user = await User.create({
-//         username:req.body.username,
-//         password:req.body.password
-//     })
-//     res.send(user)
-// })
 
 
-// // 登录
-// router.post('/api/login',async(req,res) =>{
-//     const user = await User.findOne({
-//         username:req.body.username
-//     })
-//     if(!user) {
-//         return res.status(422).send({
-//             message:"用户不存在"
-//         })
-//     }
-
-//     const isPasswordValid = require('bcryptjs').compareSync(
-//         req.body.password,
-//         user.password
-//     )
-//     if(!isPasswordValid){
-//         return res.status(422).send({
-//             message:"密码无效"
-//         })
-//     }
-    
-
-//     const token = jwt.sign({
-//         id:String(user._id)
-//     },SECRET)
-
-//     // 生成token
-//     res.send({
-//         user,
-//         token
-//     })
-// })
 
 
-// // 校验中间件
-// const auth = async(req,res) =>{
-//     const raw = String(req.headers.authorization).split(' ').pop();
-//     // 验证
-//     const {id} = jwt.verify(raw,SECRET)
-//     req.user = await User.findById(id)
-// }
+
+
+
 
 // router.get('/api/profile',auth,async(req,res) =>{
 //     res.send(req.user)

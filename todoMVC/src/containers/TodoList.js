@@ -64,7 +64,13 @@ class TodoList extends Component {
     })
   }
 
-  deleteItem (todoname) {
+  deleteItem (todoname,_id) {
+    httpPost('http://localhost:3001/todos/del', {
+        _id:_id,
+       
+    }).then((response) => {
+        return response.json()
+    })
     const data = []
     var temp = this.state.notCompleteCount
     this.state.list.forEach((element) => {
@@ -85,6 +91,7 @@ class TodoList extends Component {
   }
 
   deleteCompleteItem () {
+    
     const data = this.state.list.filter(element => element.status === 0)
     this.setState({
       list: data,
@@ -95,7 +102,13 @@ class TodoList extends Component {
        storage.set('notCompleteCount',0);
   }
 
-  completeTask (todoname) {
+  completeTask (todoname,_id) {
+    httpPost('http://localhost:3001/todos/changeStatus', {
+        _id:_id,
+       
+    }).then((response) => {
+        return response.json()
+    })
     const TodoList = []
     var temp = this.state.notCompleteCount
     this.state.list.forEach((element, index) => {
@@ -142,16 +155,7 @@ class TodoList extends Component {
        storage.set('todolist',TodoList);
        storage.set('notCompleteCount',checked === true ? TodoList.length : 0);
   }
-  // count(list){
-  // var temp=0
-  // list.forEach((element) => {
-  //   if (element.status === false) {
-      
-  //       temp++
-  //     }
-  //  return temp
-  //   } )
-  // }
+ 
 
   //生命周期函数  页面加载就会触发
   componentDidMount(){
