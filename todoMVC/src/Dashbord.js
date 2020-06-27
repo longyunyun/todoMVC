@@ -4,7 +4,9 @@ import {Route,Link,Switch,Redirect} from 'react-router-dom'
 import App from './App';
 import {connect} from 'react-redux'
 import {logout} from './Auth.redux'
-
+import Login from './containers/login'
+import Register from './containers/register'
+import TodoList from './containers/TodoList'
 @connect(
      state=>state.auth,
     {logout} 
@@ -15,27 +17,28 @@ class Dashbord extends Component{
     render(){
         console.log(this.props)
 
-        const redirectToLogin = <Redirect to='/Auth'></Redirect>
+        const redirectToLogin = <Redirect to='/Login'></Redirect>
         const match = this.props.match;
         const app = (
           <div>
+                 <TodoList/>
           {this.props.isAuth?<button onClick={this.props.logout}>注销</button> : null}
+       
               <ul>
-                  <li>
-                      <Link to={`${match.url}/`}>一营</Link>
-                  </li>
-                  <li>
-                      <Link to={`${match.url}/erying`}>二营</Link>
-                  </li>
-                  <li>
-                      <Link to={`${match.url}/qibinglian`}>骑兵连</Link>
-                  </li>
+              {/* <Link to="/login">登录</Link>
+            <Link to="/register"> 注册</Link>
+            <Link to="TodoList"> 任务清单</Link> */}
+    
               </ul>  
               <Switch>
-                  <Route path='/Dashbord/' exact component={App}></Route>
-                  {/*<Route path='/Dashbord/erying' component={Erying}></Route>
-                  <Route path='/Dashbord/qibinglian' component={Qibinglian}></Route>*/}
-              </Switch>
+                  <Route path='/Dashbord/'  component={App}></Route>
+                  {/* <Route path='/Dashbord/erying' component={Erying}></Route>
+                  <Route path='/Dashbord/qibinglian' component={Qibinglian}></Route> */}
+                      <Route path="/login" component={Login}></Route>
+            <Route path="/register" component={Register}></Route>
+            <Route path="/TodoList" component={TodoList}></Route>
+       
+              </Switch> 
           </div>
         )
 

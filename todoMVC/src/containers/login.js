@@ -1,8 +1,16 @@
 import React, { Component } from 'react'
+import {connect} from 'react-redux'
 import { Input, Card, Button, Layout, Form } from 'element-react'
 import 'element-theme-default'
 import { httpPost } from '../components/Fetch'
 import MD5 from 'crypto-js/md5'
+import {login,getUserData} from '../Auth.redux.js'
+import {Redirect} from 'react-router-dom'
+
+@connect(
+    state => state.auth,
+    {login,getUserData}
+)
 
 class Login extends Component {
     constructor(props) {
@@ -59,7 +67,8 @@ class Login extends Component {
         }).then((data) => {
             console.log(data)
             if (data.code === 200) {
-                this.props.history.push('/TodoList')
+                this.props.login()
+                // this.props.history.push('/TodoList')
             }
             else {
                 alert(data.message)
@@ -74,9 +83,19 @@ class Login extends Component {
         });
         
     }
+
+    componentWillMount(){
+        
+        this.props.getUserData()
+        console.log(this.props)
+
+    }
+
     render () {
         return (
             <div >
+
+                {this.props.isAuth ? <Redirect to='/Dashbord' /> : <h2>你没有权限，需要登录才能看</h2>}
                 <header className="header">Login</header>
                 <Layout.Row gutter="20">
                     <Layout.Col span="8" offset="8">

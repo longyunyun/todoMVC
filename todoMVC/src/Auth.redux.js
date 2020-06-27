@@ -1,10 +1,10 @@
-import axios from 'axios'
-
+// import axios from 'axios'
+// import { httpPost } from '../components/Fetch'
 const LOGIN = 'LOGIN'
 const LOGOUT = 'LOGOUT'
 const USERDATA = 'USERDATA'
 const init = {
-   // isAuth:false,
+    isAuth:false,
     user:'李云龙',
     age:20
 }
@@ -12,7 +12,7 @@ const init = {
 /**
  * 这是一个 reducer，形式为 (state, action) => state 的纯函数。
  * 描述了 action 如何把 state 转变成下一个 state。**/
-export function auth(state = init ,action){ 
+export default function auth(state = init ,action){ 
     console.log('auth.redux.js里的 state ： ' + JSON.stringify(state))
     console.log('auth.redux.js里的 action ： ' + JSON.stringify(action))
     switch(action.type){
@@ -46,10 +46,11 @@ export function userData(data)
 //建立一个异步的action 因为数据传输是异步的 需要手动dispatch
 export function getUserData(){
     return dispatch=>{
-        axios.get('/data').then(res=>{
-            if(res.status === 200){
-                dispatch(userData(res.data))
-            }   
-        })
-    }
-}
+        dispatch(userData("000"))
+        // axios.get('/data').then(res=>{
+        //     if(res.status === 200){
+        //         dispatch(userData(res.data))
+        //     }   
+        // })
+
+    } }
