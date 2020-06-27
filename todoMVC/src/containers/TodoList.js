@@ -142,7 +142,16 @@ class TodoList extends Component {
        storage.set('todolist',TodoList);
        storage.set('notCompleteCount',checked === true ? TodoList.length : 0);
   }
-
+  // count(list){
+  // var temp=0
+  // list.forEach((element) => {
+  //   if (element.status === false) {
+      
+  //       temp++
+  //     }
+  //  return temp
+  //   } )
+  // }
 
   //生命周期函数  页面加载就会触发
   componentDidMount(){
@@ -163,9 +172,15 @@ class TodoList extends Component {
       
       return response.json()
   }).then((data) => {
+    var temp=0
+    data.forEach((element) => {
+    if (element.status === false) {
+      
+        temp++
+      }})
     this.setState({
       list:data,
-      notCompleteCount:notCompleteCount
+      notCompleteCount:temp
   })
     
   }).catch(function (error) {
