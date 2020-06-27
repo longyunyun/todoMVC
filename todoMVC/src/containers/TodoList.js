@@ -4,7 +4,7 @@ import ListItem from '../components/ListItem'
 import storage from '../model/storage';
 import { Button, Card, Checkbox, Layout, Tabs } from 'element-react'
 import 'element-theme-default'
-import { httpPost } from '../components/Fetch'
+import { httpPost,httpGet } from '../components/Fetch'
 
 class TodoList extends Component {
   constructor() {
@@ -146,6 +146,7 @@ class TodoList extends Component {
 
   //生命周期函数  页面加载就会触发
   componentDidMount(){
+   
     //获取缓存的数据
     var todolist=storage.get('todolist');
     var notCompleteCount=storage.get('notCompleteCount');
@@ -156,6 +157,20 @@ class TodoList extends Component {
             notCompleteCount:notCompleteCount
         })
     }
+    //获取服务器数据
+    httpPost('http://localhost:3001/todos/todoList')
+    .then((response) => {
+      
+      return response.json()
+  }).then((data) => {
+    this.setState({
+      list:data,
+      notCompleteCount:notCompleteCount
+  })
+    
+  }).catch(function (error) {
+      console.log(error)
+  })
 }
 
   render () {

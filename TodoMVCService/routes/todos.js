@@ -22,6 +22,34 @@ router.post('/create', function (req, res) {
     });
    
 });
+ // 删除任务
+ router.get('/del', (req, res, next) => {
+    let response = res
+    Todo.find({}, (err, result, res) => {
+        if(err) return console.log(err)
+        response.render('del', { result })
+    })
+})
+router.post('/del', (req, res, next) => {
+    Todo.remove({_id: req.body._id}, (err, result) => {
+        if(err) return console.log(err)
+        console.log(result.result)
+        var response = {
+            code: 200,
+            message: "删除成功"
+          }
+         res.json(response);
+        // res.send("<a href='/'>删除成功，点击返回首页</a>")
+    })
+})
+// 获取用户任务列表
+router.post('/todoList', function (req, res) {
+
+    var todoList = Todo.find({username: req.user.name }, function (err, data) {
+        if (err) throw  err;
+        res.send(data)
+    });
+});
 module.exports = router;
 // var express = require('express');
 // var router = express.Router();
