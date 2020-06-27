@@ -18,9 +18,9 @@ class ListItem extends Component {
             return (
               <li className="listItem" key={element.todoname}>
                 <span style={{ "width": "100%", "textAlign": "left"}}>
-                <Checkbox checked={element.status === 1}
+                <Checkbox checked={element.status === false}
                   onChange={this.completeTask.bind(this, element.todoname)}> 
-                   <span style={{  margin: 20,textDecorationLine: element.status === 0 ? 'none' : 'line-through' ,color:element.status === 0 ? '#1F2D3D' : '#E5E9F2' }}>{element.todoname}</span>
+                   <span style={{  margin: 20,textDecorationLine: element.status === true ? 'none' : 'line-through' ,color:element.status === true ? '#1F2D3D' : '#E5E9F2' }}>{element.todoname}</span>
                 </Checkbox>
                 </span>
                 <span style={{ "textAlign": "right" }}>

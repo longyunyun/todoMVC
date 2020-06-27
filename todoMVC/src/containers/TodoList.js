@@ -5,7 +5,7 @@ import storage from '../model/storage';
 import { Button, Card, Checkbox, Layout, Tabs } from 'element-react'
 import 'element-theme-default'
 import { httpPost,httpGet } from '../components/Fetch'
-
+//任务状态 未完成 true ;已完成false
 class TodoList extends Component {
   constructor() {
     super()
@@ -16,7 +16,7 @@ class TodoList extends Component {
       notCompleteCount: 0,
       list: [
         {
-          todoname: '任务1', status: 0
+          todoname: '任务1', status: true
         }
       ],
       inputVal: '',
@@ -28,20 +28,20 @@ class TodoList extends Component {
     this.setState({
       list: [...this.state.list, {
         todoname: this.state.inputVal,
-        status: 0
+        status: true
       }],
       inputVal: ''
     })
       // 缓存数据
       storage.set('todolist', [...this.state.list, {
         todoname: this.state.inputVal,
-        status: 0
+        status: true
       }]);
 
       httpPost('http://localhost:3001/todos/create', {
         userid:this.state.inputVal,
         todoname: this.state.inputVal,
-        status:0
+        status:true
     }).then((response) => {
         return response.json()
     }).then((data) => {
@@ -71,7 +71,7 @@ class TodoList extends Component {
       if (element.todoname !== todoname) {
         data.push(element)
       } else {
-        if (element.status === 1) { temp-- }
+        if (element.status === false) { temp-- }
       }
     })
     // const data = this.state.list.filter(element => element.name !== name)
@@ -101,8 +101,8 @@ class TodoList extends Component {
     this.state.list.forEach((element, index) => {
       if (element.todoname === todoname) {
         const item = this.state.list[index]
-        TodoList.push(Object.assign({}, item, { status: item.status === 0 ? 1 : 0 }))
-        if (element.status === 1) {
+        TodoList.push(Object.assign({}, item, { status: item.status === true ? false : true }))
+        if (element.status === false) {
           temp--
         }
         else {
@@ -127,7 +127,7 @@ class TodoList extends Component {
     this.state.list.forEach((element, index) => {
       if (element.todoname !== "") {
         const item = this.state.list[index]
-        TodoList.push(Object.assign({}, item, { status: checked === true ? 1 : 0 }))
+        TodoList.push(Object.assign({}, item, { status: checked === true ? false : true }))
         this.setState({
           list: TodoList,
           isIndeterminate: false,
@@ -220,16 +220,16 @@ class TodoList extends Component {
                       completeTask={this.completeTask.bind(this)} />
                   </Tabs.Pane>
                   <Tabs.Pane label={<span>已完成（{this.state.notCompleteCount}）</span>} name="2">
-                    <ListItem data={this.state.list.filter(element => element.status === 1)} deleteItem={this.deleteItem.bind(this)}
+                    <ListItem data={this.state.list.filter(element => element.status === false)} deleteItem={this.deleteItem.bind(this)}
                       completeTask={this.completeTask.bind(this)} />
                   </Tabs.Pane>
                   <Tabs.Pane label={<span>待完成（{this.state.list.length - this.state.notCompleteCount}）</span>} name="3">
-                    <ListItem data={this.state.list.filter(element => element.status === 0)} deleteItem={this.deleteItem.bind(this)}
+                    <ListItem data={this.state.list.filter(element => element.status === true)} deleteItem={this.deleteItem.bind(this)}
                       completeTask={this.completeTask.bind(this)} />
                   </Tabs.Pane>
                 </Tabs>
                 <span style={{ "float": "right" }}>
-                  {this.state.list.filter(element => element.status === 1).length > 0 &&
+                  {this.state.list.filter(element => element.status === false).length > 0 &&
                     <Button type="text" icon="delete" onClick={this.deleteCompleteItem.bind(this)} >删除已完成项目</Button>}
                 </span>
               </div>
