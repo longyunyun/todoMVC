@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
  
 // 声明一个数据集 对象
 var todoSchema = new Schema({
-    userid:{
+    username:{
         type: String,
     },
     todoname: {

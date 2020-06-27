@@ -2,6 +2,7 @@
 var express = require('express');
 var router = express.Router();
 var Todo = require('../models/todos');
+var verToken = require('../public/javascripts/token_vertify.js');
  
 // /* /根路径 跳转至login.html */
 // router.get('/', function(req, res, next) {
@@ -11,7 +12,7 @@ var Todo = require('../models/todos');
 // router.get('/a', function(req, res, next) {
 //   res.sendfile('./views/register.html'); 
 // });
- 
+
  
 router.get('/login', function (req, res) {
     res.render('login');
@@ -20,32 +21,7 @@ router.get('/register', function (req, res) {
     res.render('register');
 });
  
-// 新建任务 
-router.post('/create', function (req, res) {
-	var postData = {
-        userid: req.body.userid,
-        todoname: req.body.todoname,
-        status:req.body.status
-    };
-    new Todo({ //实例化对象，新建数据
-        userid: req.body.userid,
-     
-        todoname: req.body.todoname,
-        status:req.body.status
-    }).save(function(err, todoname, status) { //保存数据
-        console.log('内容', todoname, '状态', status); //打印保存的数据
-        if(err) {throw err}
-        else{
-            var response = {
-                code: 200,
-                message: "添加待办成功"
-              }
-             res.json(response);
-        }
-      
-    });
-   
-});
+
  // 删除任务
  router.get('/del', (req, res, next) => {
     let response = res

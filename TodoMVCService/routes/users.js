@@ -1,10 +1,8 @@
 var express = require('express')
 var router = express.Router()
 var User = require('../models/users')
-var bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const config = require('../config/config')
-
+var settoken = require('../public/javascripts/token_vertify.js')
 // 登录并生成token 
 router.post(('/login'), (req, res) => {
     //接收post数据
@@ -15,36 +13,24 @@ router.post(('/login'), (req, res) => {
     //查询数据库
     User.findOne({
         username: postuser.username,
-    })
-        .then(user => {
-            if (!user) {
-                return res.status(404).json("用户不存在")
-            }
-            if (req.body.password == user.password) {
-                //验证通过 token
-                const rule = {
-
-                    username: user.username,
-                }
-                jwt.sign(rule, config.secrete, {
-                    expiresIn: 3600
-                }, (err, token) => {
-                    if (err) throw err
-                    res.json({
-                        code: 200,
-                        success: true,
-                        token: "Bearer " + token
-                    })
-                })
-            } 
-            else 
-            {
-                return res.status(400).json("密码错误")
-            }
+    }).then(user => {
+        if (!user) {
+            return res.status(404).json("用户不存在")
         }
-        )
-}
-)
+        if (req.body.password == user.password) {
+            settoken.setToken(user.username).then((data) => {
+                return res.json({
+                    code: 200,
+                    success: true,
+                    token: data
+                })
+            })
+        }
+        else {
+            return res.status(400).json("密码错误")
+        }
+    })
+})
 
 router.post('/register', function (req, res) {
     // 获取用户提交的信息
@@ -52,7 +38,6 @@ router.post('/register', function (req, res) {
         username: req.body.username,
         password: req.body.password,
     }
-    // 查询是否被注册
     User.findOne({ username: postData.username }, function (err, data) {
         if (data) {
             res.send('用户名已被注册')
@@ -62,22 +47,17 @@ router.post('/register', function (req, res) {
                 if (err) { throw err }
                 else {
                     //token
-                    const rule = {
-                        username: postData.username,
-                    }
-                    jwt.sign(rule, config.secrete, {
-                        expiresIn: 3600
-                    }, (err, token) => {
-                        if (err) throw err
-                        res.json({
+                    settoken.setToken(postData.username).then((data) => {
+                        return res.json({
                             code: 200,
                             success: true,
-                            token: "Bearer " + token
+                            token: data
                         })
                     })
                 }
             })
         }
     })
+
 })
 module.exports = router
