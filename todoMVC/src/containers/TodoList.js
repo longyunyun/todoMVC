@@ -4,6 +4,7 @@ import ListItem from '../components/ListItem'
 import storage from '../model/storage';
 import { Button, Card, Checkbox, Layout, Tabs } from 'element-react'
 import 'element-theme-default'
+import { httpPost } from '../components/Fetch'
 
 class TodoList extends Component {
   constructor() {
@@ -15,7 +16,7 @@ class TodoList extends Component {
       notCompleteCount: 0,
       list: [
         {
-          name: '任务1', status: 0
+          todoname: '任务1', status: 0
         }
       ],
       inputVal: '',
@@ -26,16 +27,34 @@ class TodoList extends Component {
     if (!this.state.inputVal) return
     this.setState({
       list: [...this.state.list, {
-        name: this.state.inputVal,
+        todoname: this.state.inputVal,
         status: 0
       }],
       inputVal: ''
     })
       // 缓存数据
       storage.set('todolist', [...this.state.list, {
-        name: this.state.inputVal,
+        todoname: this.state.inputVal,
         status: 0
       }]);
+
+      httpPost('http://localhost:3001/create', {
+        userid:this.state.inputVal,
+        todoname: this.state.inputVal,
+        status:0
+    }).then((response) => {
+        return response.json()
+    }).then((data) => {
+        console.log(data)
+        if (data.code === 200) {
+            // this.props.history.push('/TodoList')
+        }
+        else {
+            alert(data.message)
+        }
+    }).catch(function (error) {
+        console.log(error)
+    })
       
   }
 
@@ -45,11 +64,11 @@ class TodoList extends Component {
     })
   }
 
-  deleteItem (name) {
+  deleteItem (todoname) {
     const data = []
     var temp = this.state.notCompleteCount
     this.state.list.forEach((element) => {
-      if (element.name !== name) {
+      if (element.todoname !== todoname) {
         data.push(element)
       } else {
         if (element.status === 1) { temp-- }
@@ -76,11 +95,11 @@ class TodoList extends Component {
        storage.set('notCompleteCount',0);
   }
 
-  completeTask (name) {
+  completeTask (todoname) {
     const TodoList = []
     var temp = this.state.notCompleteCount
     this.state.list.forEach((element, index) => {
-      if (element.name === name) {
+      if (element.todoname === todoname) {
         const item = this.state.list[index]
         TodoList.push(Object.assign({}, item, { status: item.status === 0 ? 1 : 0 }))
         if (element.status === 1) {
@@ -106,7 +125,7 @@ class TodoList extends Component {
   handleCheckAllChange (checked) {
     const TodoList = []
     this.state.list.forEach((element, index) => {
-      if (element.name !== "") {
+      if (element.todoname !== "") {
         const item = this.state.list[index]
         TodoList.push(Object.assign({}, item, { status: checked === true ? 1 : 0 }))
         this.setState({
