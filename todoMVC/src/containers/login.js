@@ -4,12 +4,12 @@ import { Input, Card, Button, Layout, Form } from 'element-react'
 import 'element-theme-default'
 import { httpPost } from '../components/Fetch'
 import MD5 from 'crypto-js/md5'
-import {login,getUserData} from '../Auth.redux.js'
+import {login} from '../Auth.redux.js'
 import {Redirect} from 'react-router-dom'
 import storage from '../model/storage';
 @connect(
     state => state.auth,
-    {login,getUserData}
+    {login}
 )
 
 class Login extends Component {
@@ -86,12 +86,7 @@ class Login extends Component {
         
     }
 
-    componentWillMount(){
-        
-        this.props.getUserData()
-        console.log(this.props)
-
-    }
+  
 
     render () {
         return (

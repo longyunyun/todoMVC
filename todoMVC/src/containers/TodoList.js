@@ -5,6 +5,7 @@ import storage from '../model/storage';
 import { Button, Card, Checkbox, Layout, Tabs } from 'element-react'
 import 'element-theme-default'
 import { httpPost,httpGet } from '../components/Fetch'
+
 //任务状态 未完成 true ;已完成false
 class TodoList extends Component {
   constructor() {
@@ -47,10 +48,7 @@ class TodoList extends Component {
     }).then((data) => {
         console.log(data)
         if (data.code === 200) {
-            // this.props.history.push('/TodoList')
-        }
-        else {
-            alert(data.message)
+          alert("新建任务成功")
         }
     }).catch(function (error) {
         console.log(error)
@@ -70,7 +68,14 @@ class TodoList extends Component {
        
     }).then((response) => {
         return response.json()
-    })
+    }).then((data) => {
+      console.log(data)
+      if (data.code === 200) {
+        alert("删除任务成功")
+      }
+  }).catch(function (error) {
+      console.log(error)
+  })
     const data = []
     var temp = this.state.notCompleteCount
     this.state.list.forEach((element) => {
@@ -91,17 +96,25 @@ class TodoList extends Component {
   }
 
   deleteCompleteItem () {
-    httpPost('http://localhost:3001/todos/delteCompleted').then((response) => {
-      return response.json()
-  })
     const data = this.state.list.filter(element => element.status === 0)
     this.setState({
       list: data,
       notCompleteCount: 0
     })
-       // 缓存数据
-       storage.set('todolist',data);
-       storage.set('notCompleteCount',0);
+         // 缓存数据
+         storage.set('todolist',data);
+         storage.set('notCompleteCount',0);
+         httpPost('http://localhost:3001/todos/delteCompleted').then((response) => {
+          return response.json()
+      }).then((data) => {
+        console.log(data)
+        if (data.code === 200) {
+          this.componentDidMount()
+          alert("删除已完成任务成功")
+        }
+    }).catch(function (error) {
+        console.log(error)
+    })
   }
 
   completeTask (todoname,_id) {
@@ -175,21 +188,20 @@ class TodoList extends Component {
     //获取服务器数据
     httpPost('http://localhost:3001/todos/todoList')
     .then((response) => {
-      
       return response.json()
   }).then((data) => {
+   
     var temp=0
     data.forEach((element) => {
     if (element.status === false) {
-      
         temp++
       }})
     this.setState({
       list:data,
       notCompleteCount:temp
   })
-    
   }).catch(function (error) {
+    storage.remove("token")
       console.log(error)
   })
 }

@@ -5,8 +5,6 @@ const LOGOUT = 'LOGOUT'
 const USERDATA = 'USERDATA'
 const init = {
     isAuth:false,
-    user:'李云龙',
-    age:20
 }
 
 /**
@@ -19,7 +17,7 @@ export default function auth(state = init ,action){
         case LOGIN:
             return {...state,isAuth:true}
         case LOGOUT:
-            //清空缓存
+            //清空缓存 
             localStorage.clear()
             return {...state,isAuth:false}
         case USERDATA:
@@ -45,14 +43,4 @@ export function userData(data)
 {
     return {type:USERDATA,payload:data}
 }
-//建立一个异步的action 因为数据传输是异步的 需要手动dispatch
-export function getUserData(){
-    return dispatch=>{
-        dispatch(userData("000"))
-        // axios.get('/data').then(res=>{
-        //     if(res.status === 200){
-        //         dispatch(userData(res.data))
-        //     }   
-        // })
 
-    } }
