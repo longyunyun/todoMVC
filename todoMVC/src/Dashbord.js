@@ -5,21 +5,26 @@ import 'element-theme-default'
 import {Route,Link,Switch,Redirect} from 'react-router-dom'
 import App from './App';
 import {connect} from 'react-redux'
-import {logout} from './Auth.redux'
-import Login from './containers/login'
+import {login,logout} from './Auth.redux'
 import Register from './containers/register'
 import TodoList from './containers/TodoList'
 import storage from './model/storage';
 @connect(
      state=>state.auth,
-    {logout} 
+    {login,logout} 
 )
 
 class Dashbord extends Component{
-
+    componentWillMount(){
+        //有token即为已登录
+        var token=storage.get('token');
+        if(token){
+            this.props.login()
+        }
+    }
     render(){
         console.log(this.props)
-        var token=storage.get('token');
+        
         const redirectToLogin = <Redirect to='/Login'></Redirect>
         const match = this.props.match;
         const app = (

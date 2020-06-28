@@ -91,7 +91,9 @@ class TodoList extends Component {
   }
 
   deleteCompleteItem () {
-    
+    httpPost('http://localhost:3001/todos/delteCompleted').then((response) => {
+      return response.json()
+  })
     const data = this.state.list.filter(element => element.status === 0)
     this.setState({
       list: data,

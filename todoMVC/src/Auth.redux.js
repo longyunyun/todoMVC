@@ -19,6 +19,8 @@ export default function auth(state = init ,action){
         case LOGIN:
             return {...state,isAuth:true}
         case LOGOUT:
+            //清空缓存
+            localStorage.clear()
             return {...state,isAuth:false}
         case USERDATA:
            return {...state,user:action.payload.user,age:action.payload.age}

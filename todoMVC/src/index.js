@@ -23,8 +23,10 @@ import combineReducers from './reducer'  //涉及到合并reducer 不合并的�
 import Dashbord from './Dashbord'
 
 import { BrowserRouter, Route, Link,Redirect, Switch } from 'react-router-dom'
+import {login,logout} from './Auth.redux'
 
 const store = createStore(combineReducers,applyMiddleware(thunk))
+
 
 
 ReactDOM.render(
