@@ -5,7 +5,7 @@ import storage from '../model/storage'
 import { Button, Card, Checkbox, Layout, Tabs } from 'element-react'
 import 'element-theme-default'
 import { httpPost } from '../components/Fetch'
-import { createtodoService, deleteService, completeService } from '../service/todoServices'
+import {  deleteService, completeService } from '../service/todoServices'
 
 //任务状态 未完成 true ;已完成false
 class TodoList extends Component {
@@ -27,6 +27,19 @@ class TodoList extends Component {
   //新建任务
   addTask () {
     if (!this.state.inputVal) return
+    httpPost('http://localhost:3001/todos/create', {
+      todoname: this.state.inputVal,
+      status: true
+    }).then((response) => {
+      return response.json()
+    }).then((data) => {
+      console.log(data)
+      if (data.code === 200) {
+        this.componentDidMount()
+      }
+    }).catch(function (error) {
+      console.log(error)
+    })
     this.setState({
       list: [...this.state.list, {
         todoname: this.state.inputVal,
@@ -39,8 +52,7 @@ class TodoList extends Component {
       todoname: this.state.inputVal,
       status: true
     }])
-    //服务器新建任务
-    createtodoService(this.state.inputVal, true)
+
   }
 
   handleChange (e) {

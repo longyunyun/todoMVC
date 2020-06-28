@@ -29,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
+
 var cors = require('cors')   
 //引入cors模块之后，在终端用命令安装cors模块
 //安装cors的命令   $ cnpm i cors -S

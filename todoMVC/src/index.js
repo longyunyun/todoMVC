@@ -1,21 +1,20 @@
-
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { createStore, applyMiddleware, compose } from 'redux' // applyMiddleware 处理中间键
+import { createStore, applyMiddleware } from 'redux' // applyMiddleware 处理中间键
 import thunk from 'redux-thunk'  // 中间键
 import { Provider } from 'react-redux'
-import * as serviceWorker from './serviceWorker'
 import { Menu } from 'element-react'
 import 'element-theme-default'
-import Login from './containers/login'
+import { BrowserRouter, Route, Link, Redirect, Switch } from 'react-router-dom'
+
 import Register from './containers/register'
 import Footer from './footer'
-import combineReducers from './reducer'  //涉及到合并reducer 不合并的话可以不用
+import combineReducers from './reducer'  
 //分为登录页和主页  做权限校验
+import Login from './containers/login'
 import Dashbord from './Dashbord'
-import { BrowserRouter, Route, Link, Redirect, Switch } from 'react-router-dom'
-const store = createStore(combineReducers, applyMiddleware(thunk))
 
+const store = createStore(combineReducers, applyMiddleware(thunk))
 ReactDOM.render(
   (
     <Provider store={store}>
@@ -37,4 +36,3 @@ ReactDOM.render(
     </Provider>
   ),
   document.getElementById('root'))
-serviceWorker.unregister()

@@ -1,7 +1,6 @@
 var express = require('express')
 var router = express.Router()
 var User = require('../models/users')
-const jwt = require('jsonwebtoken')
 var settoken = require('../public/javascripts/token_vertify.js')
 // 登录并生成token 
 router.post(('/login'), (req, res) => {
