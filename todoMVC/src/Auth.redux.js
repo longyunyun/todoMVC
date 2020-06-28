@@ -1,15 +1,11 @@
-// import axios from 'axios'
-// import { httpPost } from '../components/Fetch'
 const LOGIN = 'LOGIN'
 const LOGOUT = 'LOGOUT'
-const USERDATA = 'USERDATA'
+
 const init = {
     isAuth:false,
 }
 
-/**
- * 这是一个 reducer，形式为 (state, action) => state 的纯函数。
- * 描述了 action 如何把 state 转变成下一个 state。**/
+//reducer
 export default function auth(state = init ,action){ 
     console.log('auth.redux.js里的 state ： ' + JSON.stringify(state))
     console.log('auth.redux.js里的 action ： ' + JSON.stringify(action))
@@ -17,30 +13,23 @@ export default function auth(state = init ,action){
         case LOGIN:
             return {...state,isAuth:true}
         case LOGOUT:
-            //清空缓存 
-            localStorage.clear()
+          
             return {...state,isAuth:false}
-        case USERDATA:
-           return {...state,user:action.payload.user,age:action.payload.age}
         default :
             return state
     }
 }
 
-//惟一改变 state 的方法就是触发 action，action 是一个用于描述已发生事件的普通对象
-//// 改变内部 state 惟一方法是 dispatch 一个 action。
+
 //action
 export function login(){
     return {type:LOGIN}
 }
 
 export function logout(){
+      //清空缓存 
+      localStorage.clear()
     return {type:LOGOUT}
 }
 
-//可传入一个载荷 将在reducer的action中体现
-export function userData(data)
-{
-    return {type:USERDATA,payload:data}
-}
 

@@ -1,17 +1,18 @@
 import React, { Component } from 'react'
 import '../App.css'
 import ListItem from '../components/ListItem'
-import storage from '../model/storage';
+import storage from '../model/storage'
 import { Button, Card, Checkbox, Layout, Tabs } from 'element-react'
 import 'element-theme-default'
-import { httpPost,httpGet } from '../components/Fetch'
+import { httpPost } from '../components/Fetch'
+import { createtodoService, deleteService, completeService } from '../service/todoServices'
 
 //任务状态 未完成 true ;已完成false
 class TodoList extends Component {
   constructor() {
     super()
     this.state = {
-      name :'tempList',
+      name: 'tempList',
       checkAll: false,
       isIndeterminate: true,
       notCompleteCount: 0,
@@ -23,7 +24,7 @@ class TodoList extends Component {
       inputVal: '',
     }
   }
-//新建任务
+  //新建任务
   addTask () {
     if (!this.state.inputVal) return
     this.setState({
@@ -33,27 +34,13 @@ class TodoList extends Component {
       }],
       inputVal: ''
     })
-      // 缓存数据
-      storage.set('todolist', [...this.state.list, {
-        todoname: this.state.inputVal,
-        status: true
-      }]);
-
-      httpPost('http://localhost:3001/todos/create', {
-        userid:this.state.inputVal,
-        todoname: this.state.inputVal,
-        status:true
-    }).then((response) => {
-        return response.json()
-    }).then((data) => {
-        console.log(data)
-        if (data.code === 200) {
-          alert("新建任务成功")
-        }
-    }).catch(function (error) {
-        console.log(error)
-    })
-      
+    // 缓存数据
+    storage.set('todolist', [...this.state.list, {
+      todoname: this.state.inputVal,
+      status: true
+    }])
+    //服务器新建任务
+    createtodoService(this.state.inputVal, true)
   }
 
   handleChange (e) {
@@ -62,20 +49,9 @@ class TodoList extends Component {
     })
   }
 
-  deleteItem (todoname,_id) {
-    httpPost('http://localhost:3001/todos/del', {
-        _id:_id,
-       
-    }).then((response) => {
-        return response.json()
-    }).then((data) => {
-      console.log(data)
-      if (data.code === 200) {
-        alert("删除任务成功")
-      }
-  }).catch(function (error) {
-      console.log(error)
-  })
+  deleteItem (todoname, _id) {
+    //服务器删除任务
+    deleteService(_id)
     const data = []
     var temp = this.state.notCompleteCount
     this.state.list.forEach((element) => {
@@ -85,14 +61,13 @@ class TodoList extends Component {
         if (element.status === false) { temp-- }
       }
     })
-    // const data = this.state.list.filter(element => element.name !== name)
     this.setState({
       list: data,
       notCompleteCount: temp
     })
-        // 缓存数据
-        storage.set('todolist',data);
-        storage.set('notCompleteCount',temp);
+    // 缓存数据
+    storage.set('todolist', data)
+    storage.set('notCompleteCount', temp)
   }
 
   deleteCompleteItem () {
@@ -101,29 +76,25 @@ class TodoList extends Component {
       list: data,
       notCompleteCount: 0
     })
-         // 缓存数据
-         storage.set('todolist',data);
-         storage.set('notCompleteCount',0);
-         httpPost('http://localhost:3001/todos/delteCompleted').then((response) => {
-          return response.json()
-      }).then((data) => {
-        console.log(data)
-        if (data.code === 200) {
-          this.componentDidMount()
-          alert("删除已完成任务成功")
-        }
+    // 缓存数据
+    storage.set('todolist', data)
+    storage.set('notCompleteCount', 0)
+
+    httpPost('http://localhost:3001/todos/delteCompleted').then((response) => {
+      return response.json()
+    }).then((data) => {
+      console.log(data)
+      if (data.code === 200) {
+        this.componentDidMount()
+      }
     }).catch(function (error) {
-        console.log(error)
+      console.log(error)
     })
   }
 
-  completeTask (todoname,_id) {
-    httpPost('http://localhost:3001/todos/changeStatus', {
-        _id:_id,
-       
-    }).then((response) => {
-        return response.json()
-    })
+  completeTask (todoname, _id) {
+    //服务
+    completeService(_id)
     const TodoList = []
     var temp = this.state.notCompleteCount
     this.state.list.forEach((element, index) => {
@@ -138,7 +109,6 @@ class TodoList extends Component {
         }
         this.setState({
           list: TodoList,
-          // notCompleteCount: this.state.notCompleteCount
           notCompleteCount: temp
         })
       } else {
@@ -146,10 +116,9 @@ class TodoList extends Component {
       }
     })
     // 缓存数据
-    storage.set('todolist',TodoList);
-    storage.set('notCompleteCount',temp);
+    storage.set('todolist', TodoList)
+    storage.set('notCompleteCount', temp)
   }
-
   handleCheckAllChange (checked) {
     const TodoList = []
     this.state.list.forEach((element, index) => {
@@ -166,45 +135,44 @@ class TodoList extends Component {
         TodoList.push(element)
       }
     })
-       // 缓存数据
-       storage.set('todolist',TodoList);
-       storage.set('notCompleteCount',checked === true ? TodoList.length : 0);
+    // 缓存数据
+    storage.set('todolist', TodoList)
+    storage.set('notCompleteCount', checked === true ? TodoList.length : 0)
   }
- 
 
   //生命周期函数  页面加载就会触发
-  componentDidMount(){
-   
+  componentDidMount () {
     //获取缓存的数据
-    var todolist=storage.get('todolist');
-    var notCompleteCount=storage.get('notCompleteCount');
-    if(todolist){
-        //拿到缓存的数据 自动刷新
-        this.setState({
-            list:todolist,
-            notCompleteCount:notCompleteCount
-        })
+    var todolist = storage.get('todolist')
+    var notCompleteCount = storage.get('notCompleteCount')
+    if (todolist) {
+      //拿到缓存的数据 自动刷新
+      this.setState({
+        list: todolist,
+        notCompleteCount: notCompleteCount
+      })
     }
     //获取服务器数据
     httpPost('http://localhost:3001/todos/todoList')
-    .then((response) => {
-      return response.json()
-  }).then((data) => {
-   
-    var temp=0
-    data.forEach((element) => {
-    if (element.status === false) {
-        temp++
-      }})
-    this.setState({
-      list:data,
-      notCompleteCount:temp
-  })
-  }).catch(function (error) {
-    storage.remove("token")
-      console.log(error)
-  })
-}
+      .then((response) => {
+        return response.json()
+      }).then((data) => {
+
+        var temp = 0
+        data.forEach((element) => {
+          if (element.status === false) {
+            temp++
+          }
+        })
+        this.setState({
+          list: data,
+          notCompleteCount: temp
+        })
+      }).catch(function (error) {
+        storage.remove("token")
+        console.log(error)
+      })
+  }
 
   render () {
     return (
@@ -219,10 +187,11 @@ class TodoList extends Component {
                     <Checkbox
                       checked={this.state.checkAll}
                       indeterminate={this.state.isIndeterminate}
-                      onChange={this.handleCheckAllChange.bind(this)} 
-                      />
-                    <input type="text" value={this.state.inputVal} onChange={this.handleChange.bind(this)} 
-                      placeholder="在此添加任务"></input>
+                      onChange={this.handleCheckAllChange.bind(this)} />
+                    <input type="text"
+                      value={this.state.inputVal}
+                      onChange={this.handleChange.bind(this)}
+                      placeholder="在此添加任务" />
                     <span style={{ "textAlign": "right" }}>
                       <Button type="text" icon="plus" onClick={this.addTask.bind(this)} />
                     </span>
@@ -230,28 +199,33 @@ class TodoList extends Component {
                 </div>
               }
             >
-              {this.state.list.length > 0 &&
-              <div className="text item">
-                <Tabs activeName="1">
-                  <Tabs.Pane label={<span>全部任务（{this.state.list.length}）</span>} name="1">
-                    <ListItem data={this.state.list} deleteItem={this.deleteItem.bind(this)}
-                      completeTask={this.completeTask.bind(this)} />
-                  </Tabs.Pane>
-                  <Tabs.Pane label={<span>已完成（{this.state.notCompleteCount}）</span>} name="2">
-                    <ListItem data={this.state.list.filter(element => element.status === false)} deleteItem={this.deleteItem.bind(this)}
-                      completeTask={this.completeTask.bind(this)} />
-                  </Tabs.Pane>
-                  <Tabs.Pane label={<span>待完成（{this.state.list.length - this.state.notCompleteCount}）</span>} name="3">
-                    <ListItem data={this.state.list.filter(element => element.status === true)} deleteItem={this.deleteItem.bind(this)}
-                      completeTask={this.completeTask.bind(this)} />
-                  </Tabs.Pane>
-                </Tabs>
-                <span style={{ "float": "right" }}>
-                  {this.state.list.filter(element => element.status === false).length > 0 &&
-                    <Button type="text" icon="delete" onClick={this.deleteCompleteItem.bind(this)} >删除已完成项目</Button>}
-                </span>
-              </div>
-            }
+              {
+                this.state.list.length > 0 &&
+                <div className="text item">
+                  <Tabs activeName="1">
+                    <Tabs.Pane label={<span>全部任务（{this.state.list.length}）</span>} name="1">
+                      <ListItem data={this.state.list} deleteItem={this.deleteItem.bind(this)}
+                        completeTask={this.completeTask.bind(this)} />
+                    </Tabs.Pane>
+                    <Tabs.Pane label={<span>已完成（{this.state.notCompleteCount}）</span>} name="2">
+                      <ListItem data={this.state.list.filter(element => element.status === false)}
+                        deleteItem={this.deleteItem.bind(this)}
+                        completeTask={this.completeTask.bind(this)} />
+                    </Tabs.Pane>
+                    <Tabs.Pane label={<span>待完成（{this.state.list.length - this.state.notCompleteCount}）</span>} name="3">
+                      <ListItem data={this.state.list.filter(element => element.status === true)}
+                        deleteItem={this.deleteItem.bind(this)}
+                        completeTask={this.completeTask.bind(this)} />
+                    </Tabs.Pane>
+                  </Tabs>
+                  <span style={{ "float": "right" }}>
+                    {
+                      this.state.list.filter(element => element.status === false).length > 0 &&
+                      <Button type="text" icon="delete" onClick={this.deleteCompleteItem.bind(this)} >删除已完成项目</Button>
+                    }
+                  </span>
+                </div>
+              }
             </Card>
           </Layout.Col>
         </Layout.Row>
