@@ -6,7 +6,7 @@ import { Button, Card, Checkbox, Layout, Tabs } from 'element-react'
 import 'element-theme-default'
 import { httpPost } from '../components/Fetch'
 import {  deleteService, completeService } from '../service/todoServices'
-
+import '../config'
 //任务状态 未完成 true ;已完成false
 class TodoList extends Component {
   constructor() {
@@ -27,7 +27,7 @@ class TodoList extends Component {
   //新建任务
   addTask () {
     if (!this.state.inputVal) return
-    httpPost('http://localhost:3001/todos/create', {
+    httpPost(global.targetUrl+'todos/create', {
       todoname: this.state.inputVal,
       status: true
     }).then((response) => {
@@ -92,7 +92,7 @@ class TodoList extends Component {
     storage.set('todolist', data)
     storage.set('notCompleteCount', 0)
 
-    httpPost('http://localhost:3001/todos/delteCompleted').then((response) => {
+    httpPost(global.targetUrl+'todos/delteCompleted').then((response) => {
       return response.json()
     }).then((data) => {
       console.log(data)
@@ -165,7 +165,7 @@ class TodoList extends Component {
       })
     }
     //获取服务器数据
-    httpPost('http://localhost:3001/todos/todoList')
+    httpPost(global.targetUrl+'todos/todoList')
       .then((response) => {
         return response.json()
       }).then((data) => {

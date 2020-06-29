@@ -7,6 +7,7 @@ import MD5 from 'crypto-js/md5'
 import { login } from '../Auth.redux.js'
 import { Redirect } from 'react-router-dom'
 import storage from '../model/storage'
+import '../config'
 @connect(
     state => state.auth,
     { login }
@@ -68,7 +69,7 @@ class Login extends Component {
         e.preventDefault()
         this.refs.form.validate((valid) => {
             if (valid) {
-                httpPost('http://localhost:3001/users/login', {
+                httpPost(global.targetUrl+'users/login', {
                     username: this.state.form.username,
                     password: MD5(this.state.form.password)
                 }).then((response) => {
@@ -82,7 +83,7 @@ class Login extends Component {
                         // this.props.history.push('/TodoList')
                     }
                     else {
-                        alert(data.message)
+                        alert("账户名或密码错误")
                     }
                 }).catch(function (error) {
                     console.log(error)
@@ -101,6 +102,7 @@ class Login extends Component {
                 {this.props.isAuth ? <Redirect to='/Dashbord' /> : <header className="header">Login</header>}
                 <Layout.Row gutter="20">
                     <Layout.Col span="8" offset="8">
+                        <p>hh{global.targetUrl}</p>
                         <Card>
                             <div style={{ margin: 20 }}></div>
                             <Form labelPosition='top' ref="form" model={this.state.form} rules={this.state.rules} labelWidth="100" className="demo-form-stacked">

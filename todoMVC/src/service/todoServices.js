@@ -1,7 +1,7 @@
 import { httpPost } from '../components/Fetch'
-
+import '../config'
 export function createtodoService (todoname, status) {
-    httpPost('http://localhost:3001/todos/create', {
+    httpPost(global.targetUrl+'todos/create', {
         todoname: todoname,
         status: status
     }).then((response) => {
@@ -17,7 +17,7 @@ export function createtodoService (todoname, status) {
 }
 
 export function deleteService (_id) {
-    httpPost('http://localhost:3001/todos/del', {
+    httpPost(global.targetUrl+'todos/del', {
         _id: _id,
 
     }).then((response) => {
@@ -33,7 +33,7 @@ export function deleteService (_id) {
 }
 
 export function deleteCompletedService () {
-    httpPost('http://localhost:3001/todos/delteCompleted').then((response) => {
+    httpPost(global.targetUrl+'todos/delteCompleted').then((response) => {
         return response.json()
     }).then((data) => {
         console.log(data)
@@ -48,7 +48,7 @@ export function deleteCompletedService () {
 
 //完成任务，即切换任务状态
 export function completeService (_id) {
-    httpPost('http://localhost:3001/todos/changeStatus', {
+    httpPost(global.targetUrl+'todos/changeStatus', {
         _id: _id,
     }).then((response) => {
         return response.json()

@@ -3,7 +3,7 @@ import { Input, Card, Button, Layout, Form } from 'element-react'
 import 'element-theme-default'
 import { httpPost } from '../components/Fetch'
 import MD5 from 'crypto-js/md5'
-
+import '../config'
 class Register extends Component {
     constructor(props) {
         super(props)
@@ -64,7 +64,7 @@ class Register extends Component {
         e.preventDefault()
         this.refs.form.validate((valid) => {
             if (valid) {
-                httpPost('http://localhost:3001/users/register', {
+                httpPost(global.targetUrl+'users/register', {
                     username: this.state.form.username,
                     password: MD5(this.state.form.password)
                 }).then((response) => {

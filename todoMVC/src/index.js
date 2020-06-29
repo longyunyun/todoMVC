@@ -14,6 +14,7 @@ import combineReducers from './reducer'
 import Login from './containers/login'
 import Dashbord from './Dashbord'
 
+
 const store = createStore(combineReducers, applyMiddleware(thunk))
 ReactDOM.render(
   (
