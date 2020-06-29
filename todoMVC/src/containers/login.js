@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+﻿import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Input, Card, Button, Layout, Form } from 'element-react'
 import 'element-theme-default'
@@ -102,7 +102,7 @@ class Login extends Component {
                 {this.props.isAuth ? <Redirect to='/Dashbord' /> : <header className="header">Login</header>}
                 <Layout.Row gutter="20">
                     <Layout.Col span="8" offset="8">
-                        <p>hh{global.targetUrl}</p>
+                        
                         <Card>
                             <div style={{ margin: 20 }}></div>
                             <Form labelPosition='top' ref="form" model={this.state.form} rules={this.state.rules} labelWidth="100" className="demo-form-stacked">
