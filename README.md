@@ -24,6 +24,11 @@
 ### `npm start`
 浏览器访问 http://localhost:3000
 
+### 前端运行方法 3
+### ` docker build -t todomvcweb .`
+### ` docker run -p 3000:3000 todomvcweb`
+浏览器访问 http://localhost:3000
+
 ### 后端运行方法 1
 ### `pm2 start ./bin/www --watch`
 
@@ -31,6 +36,12 @@
 ### `npm install`
 ### `npm start`
 
+### 后端运行方法 3
+### `docker build -t todomvcservice .`
+### `docker run -p 3001:3001 todomvcservice`
+
 ## 涉及到的配置文件
+
 前端config.js中定义了后端的地址global.targetUrl = 'http://127.0.0.1:3001/';
+
 后端config.js中定义了数据库 mongodb : 'mongodb://127.0.0.1:27017/ToDoMVC',（如果数据库有账户名密码，应该这样写'mongodb://用户名:密码@ip地址:端口号/数据库'）
