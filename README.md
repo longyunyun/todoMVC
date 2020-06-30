@@ -26,7 +26,7 @@
 
 ### 前端运行方法 3
 ### ` docker build -t todomvcweb .`
-### ` docker run -p 3000:3000 todomvcweb`
+### ` docker run --name todomvcweb -p 3000:3000 todomvcweb`
 浏览器访问 http://localhost:3000
 
 ### 后端运行方法 1
@@ -38,7 +38,7 @@
 
 ### 后端运行方法 3
 ### `docker build -t todomvcservice .`
-### `docker run -p 3001:3001 todomvcservice`
+### `docker run --name todomvcservice -p 3001:3001 todomvcservice`
 
 ## 涉及到的配置文件
 
