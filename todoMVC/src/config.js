@@ -1,2 +1,2 @@
-global.targetUrl = 'http://localhost:3001/';
+global.targetUrl = 'http://127.0.0.1:3001/';
  

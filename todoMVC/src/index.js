@@ -5,7 +5,7 @@ import thunk from 'redux-thunk'  // 中间键
 import { Provider } from 'react-redux'
 import { Menu } from 'element-react'
 import 'element-theme-default'
-import { BrowserRouter, Route, Link, Redirect, Switch } from 'react-router-dom'
+import { HashRouter, Route, Link, Redirect, Switch } from 'react-router-dom'
 
 import Register from './containers/register'
 import Footer from './footer'
@@ -19,7 +19,7 @@ const store = createStore(combineReducers, applyMiddleware(thunk))
 ReactDOM.render(
   (
     <Provider store={store}>
-      <BrowserRouter>
+      <HashRouter>
         <Menu theme="dark" defaultActive="1" className="el-menu-demo" mode="horizontal" >
           <Link to="/Login"><Menu.Item index="1">登录</Menu.Item></Link>
           <Link to="/register"> <Menu.Item index="2">注册</Menu.Item></Link>
@@ -32,7 +32,7 @@ ReactDOM.render(
           <Route path='/Dashbord' component={Dashbord}></Route>
           <Redirect to='/Dashbord'></Redirect>
         </Switch>
-      </BrowserRouter>
+      </HashRouter>
       <Footer />
     </Provider>
   ),
