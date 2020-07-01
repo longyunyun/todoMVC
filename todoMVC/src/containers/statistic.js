@@ -59,7 +59,7 @@ class Statistic extends Component {
               <div>
                 活动用户数量：{this.state.usercount}</div>
               <div>
-                平均页面加载时间：{this.state.averageopentime}</div>
+                平均页面加载时间：{this.state.averageopentime}毫秒</div>
             </Card>
           </Layout.Col>
         </Layout.Row>
