@@ -4,13 +4,13 @@ import { Input, Card, Button, Layout, Form } from 'element-react'
 import 'element-theme-default'
 import { httpPost } from '../components/Fetch'
 import MD5 from 'crypto-js/md5'
-import { login } from '../Auth.redux.js'
+import { login ,offline} from '../Auth.redux.js'
 import { Redirect } from 'react-router-dom'
 import storage from '../model/storage'
 import '../config'
 @connect(
     state => state.auth,
-    { login }
+    { login,offline }
 )
 
 class Login extends Component {
@@ -99,7 +99,7 @@ class Login extends Component {
     render () {
         return (
             <div >
-                {this.props.isAuth ? <Redirect to='/Dashbord' /> : <header className="header">Login</header>}
+                {(this.props.isAuth||this.props.isOffline ) ? <Redirect to='/Dashbord' /> : <header className="header">Login</header>}
                 <Layout.Row gutter="20">
                     <Layout.Col span="8" offset="8">
                         
@@ -114,8 +114,10 @@ class Login extends Component {
                                 </Form.Item>
                                 <Form.Item style={{ textAlign: "center" }}>
                                     <Button onClick={this.handleSubmit.bind(this)}>登录</Button>
+                                    <Button  plain={true} type="warning"onClick={this.props.offline}>离线访问</Button>
                                 </Form.Item>
                             </Form>
+                            
                         </Card>
                     </Layout.Col>
                 </Layout.Row>
