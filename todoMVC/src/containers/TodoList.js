@@ -5,7 +5,7 @@ import storage from '../model/storage'
 import { Button, Card, Checkbox, Layout, Tabs } from 'element-react'
 import 'element-theme-default'
 import { httpPost } from '../components/Fetch'
-import {  deleteService, completeService } from '../service/todoServices'
+import { deleteService, completeService } from '../service/todoServices'
 import '../config'
 //任务状态 未完成 true ;已完成false
 class TodoList extends Component {
@@ -22,12 +22,13 @@ class TodoList extends Component {
         }
       ],
       inputVal: '',
+      t1: new Date().getTime()
     }
   }
   //新建任务
   addTask () {
     if (!this.state.inputVal) return
-    httpPost(global.targetUrl+'todos/create', {
+    httpPost(global.targetUrl + 'todos/create', {
       todoname: this.state.inputVal,
       status: true
     }).then((response) => {
@@ -92,7 +93,7 @@ class TodoList extends Component {
     storage.set('todolist', data)
     storage.set('notCompleteCount', 0)
 
-    httpPost(global.targetUrl+'todos/delteCompleted').then((response) => {
+    httpPost(global.targetUrl + 'todos/delteCompleted').then((response) => {
       return response.json()
     }).then((data) => {
       console.log(data)
@@ -135,7 +136,7 @@ class TodoList extends Component {
   handleCheckAllChange (checked) {
     const TodoList = []
     this.state.list.forEach((element, index) => {
-      if(element.status===checked){
+      if (element.status === checked) {
         completeService(element._id)
       }
       if (element.todoname !== "") {
@@ -169,7 +170,9 @@ class TodoList extends Component {
       })
     }
     //获取服务器数据
-    httpPost(global.targetUrl+'todos/todoList')
+    httpPost(global.targetUrl + 'todos/todoList', {
+      openpagetime: new Date().getTime() - this.state.t1
+    })
       .then((response) => {
         return response.json()
       }).then((data) => {
@@ -191,6 +194,7 @@ class TodoList extends Component {
   }
 
   render () {
+
     return (
       <div className="reactTodoList">
         <header className="header">todos</header>
@@ -243,6 +247,7 @@ class TodoList extends Component {
                 </div>
               }
             </Card>
+            <div className="small">{"加载本页耗时 " + (new Date().getTime() - this.state.t1) + " 毫秒"}</div>
           </Layout.Col>
         </Layout.Row>
       </div>

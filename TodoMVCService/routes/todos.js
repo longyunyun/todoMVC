@@ -2,6 +2,7 @@
 var express = require('express')
 var router = express.Router()
 var Todo = require('../models/todos')
+var Statistic=require('../models/statistic')
 // 新建任务 
 router.post('/create', function (req, res) {
     new Todo({ //实例化对象，新建数据
@@ -79,6 +80,12 @@ router.post('/todoList', function (req, res) {
     Todo.find({ username: req.user.name }, function (err, data) {
         if (err) throw err
         res.send(data)
+    })
+    new Statistic({ //实例化对象，新建数据
+        username: req.user.name,
+        openpagetime: req.body.openpagetime,
+    }).save(function (err) { //保存数据
+        if (err) { throw err }
     })
 })
 module.exports = router

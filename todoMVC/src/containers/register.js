@@ -48,7 +48,7 @@ class Register extends Component {
                     {
                         required: true, message: '请设置登录名',
                         trigger: 'blur'
-                    }, 
+                    },
                     {
                         min: 6, message: '登录名长度不少于6',
                         trigger: 'blur'
@@ -64,7 +64,7 @@ class Register extends Component {
         e.preventDefault()
         this.refs.form.validate((valid) => {
             if (valid) {
-                httpPost(global.targetUrl+'users/register', {
+                httpPost(global.targetUrl + 'users/register', {
                     username: this.state.form.username,
                     password: MD5(this.state.form.password)
                 }).then((response) => {

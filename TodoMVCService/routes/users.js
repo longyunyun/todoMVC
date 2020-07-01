@@ -1,6 +1,7 @@
 var express = require('express')
 var router = express.Router()
 var User = require('../models/users')
+var UserStatistic = require('../models/userstatistic')
 var settoken = require('../public/javascripts/token_vertify.js')
 // 登录并生成token 
 router.post(('/login'), (req, res) => {
@@ -17,6 +18,11 @@ router.post(('/login'), (req, res) => {
             return res.status(404).json("用户不存在")
         }
         if (req.body.password == user.password) {
+            new UserStatistic({ //实例化对象，新建数据
+                username: postuser.username,
+            }).save(function (err) { //保存数据
+                if (err) { throw err }
+            })
             settoken.setToken(user.username).then((data) => {
                 return res.json({
                     code: 200,
@@ -45,6 +51,11 @@ router.post('/register', function (req, res) {
             User.create(postData, function (err, data) {
                 if (err) { throw err }
                 else {
+                    new UserStatistic({ //实例化对象，新建数据
+                        username: req.body.username,
+                    }).save(function (err) { //保存数据
+                        if (err) { throw err }
+                    })
                     //token
                     settoken.setToken(postData.username).then((data) => {
                         return res.json({
@@ -55,8 +66,8 @@ router.post('/register', function (req, res) {
                     })
                 }
             })
+       
         }
     })
-
 })
 module.exports = router

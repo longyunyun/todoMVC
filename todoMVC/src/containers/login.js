@@ -4,13 +4,13 @@ import { Input, Card, Button, Layout, Form } from 'element-react'
 import 'element-theme-default'
 import { httpPost } from '../components/Fetch'
 import MD5 from 'crypto-js/md5'
-import { login ,offline} from '../Auth.redux.js'
+import { login, offline } from '../Auth.redux.js'
 import { Redirect } from 'react-router-dom'
 import storage from '../model/storage'
 import '../config'
 @connect(
     state => state.auth,
-    { login,offline }
+    { login, offline }
 )
 
 class Login extends Component {
@@ -69,7 +69,7 @@ class Login extends Component {
         e.preventDefault()
         this.refs.form.validate((valid) => {
             if (valid) {
-                httpPost(global.targetUrl+'users/login', {
+                httpPost(global.targetUrl + 'users/login', {
                     username: this.state.form.username,
                     password: MD5(this.state.form.password)
                 }).then((response) => {
@@ -99,10 +99,10 @@ class Login extends Component {
     render () {
         return (
             <div >
-                {(this.props.isAuth||this.props.isOffline ) ? <Redirect to='/Dashbord' /> : <header className="header">Login</header>}
+                {(this.props.isAuth || this.props.isOffline) ? <Redirect to='/Dashbord' /> : <header className="header">Login</header>}
                 <Layout.Row gutter="20">
                     <Layout.Col span="8" offset="8">
-                        
+
                         <Card>
                             <div style={{ margin: 20 }}></div>
                             <Form labelPosition='top' ref="form" model={this.state.form} rules={this.state.rules} labelWidth="100" className="demo-form-stacked">
@@ -114,10 +114,10 @@ class Login extends Component {
                                 </Form.Item>
                                 <Form.Item style={{ textAlign: "center" }}>
                                     <Button onClick={this.handleSubmit.bind(this)}>登录</Button>
-                                    <Button  plain={true} type="warning"onClick={this.props.offline}>离线访问</Button>
+                                    <Button plain={true} type="warning" onClick={this.props.offline}>离线访问</Button>
                                 </Form.Item>
                             </Form>
-                            
+
                         </Card>
                     </Layout.Col>
                 </Layout.Row>

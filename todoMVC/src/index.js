@@ -6,8 +6,8 @@ import { Provider } from 'react-redux'
 import { Menu } from 'element-react'
 import 'element-theme-default'
 import { HashRouter, Route, Link, Redirect, Switch } from 'react-router-dom'
-
 import Register from './containers/register'
+import Statistic from './containers/statistic'
 import Footer from './footer'
 import combineReducers from './reducer'  
 //分为登录页和主页  做权限校验
@@ -24,8 +24,10 @@ ReactDOM.render(
           <Link to="/Login"><Menu.Item index="1">登录</Menu.Item></Link>
           <Link to="/register"> <Menu.Item index="2">注册</Menu.Item></Link>
           <Link to="/Dashbord"> <Menu.Item index="3">任务清单</Menu.Item></Link>
+          <Link to="/Statistic"> <Menu.Item index="4">使用情况统计</Menu.Item></Link>
         </Menu>
         <Switch>
+        <Route path="/Statistic" component={Statistic}></Route>
           <Route path="/register" component={Register}></Route>
           {/*只命中匹配上的第一个route*/}
           <Route exact path='/Login' component={Login}></Route>

@@ -67,4 +67,8 @@ ul li {
 ul li span {
   flex: 1;
 }
-
+.small{
+  text-align: center;
+  font:12px  Extra ,Extra ,Small;
+  color:#E5E9F2
+}

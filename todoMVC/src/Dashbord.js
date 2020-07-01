@@ -13,7 +13,9 @@ import './App.css'
 )
 
 class Dashbord extends Component {
+ 
     componentWillMount () {
+        
         //有token即为已登录
         var token = storage.get('token')
         if (token) {
@@ -21,6 +23,7 @@ class Dashbord extends Component {
         }
     }
     render () {
+       
         const redirectToLogin = <Redirect to='/Login'></Redirect>
         const app = (
             <div className="App">
@@ -28,6 +31,8 @@ class Dashbord extends Component {
                     <Route path='/Dashbord/' component={TodoList}></Route>
                 </Switch>
                 <div style={{ margin: 20 }}></div>
+
+
                 {this.props.isAuth ? <Button onClick={this.props.logout}>注销</Button> : null}
                 {this.props.isOffline ? <Button onClick={this.props.online}>退出离线访问</Button> : null}
             </div>

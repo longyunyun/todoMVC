@@ -60,7 +60,7 @@ app.use(function(req, res, next) {
 app.use(expressJwt({
 	secret: 'mes_qdhd_mobile_xhykjyxgs'
 }).unless({
-  path: ['/users/login','/users/register'],//登录和注册不验证
+  path: ['/users/login','/users/register','/'],//登录和注册不验证
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
