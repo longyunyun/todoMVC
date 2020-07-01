@@ -83,7 +83,7 @@ class TodoList extends Component {
   }
 
   deleteCompleteItem () {
-    const data = this.state.list.filter(element => element.status === 0)
+    const data = this.state.list.filter(element => element.status === true)
     this.setState({
       list: data,
       notCompleteCount: 0
@@ -131,9 +131,13 @@ class TodoList extends Component {
     storage.set('todolist', TodoList)
     storage.set('notCompleteCount', temp)
   }
+
   handleCheckAllChange (checked) {
     const TodoList = []
     this.state.list.forEach((element, index) => {
+      if(element.status===checked){
+        completeService(element._id)
+      }
       if (element.todoname !== "") {
         const item = this.state.list[index]
         TodoList.push(Object.assign({}, item, { status: checked === true ? false : true }))
